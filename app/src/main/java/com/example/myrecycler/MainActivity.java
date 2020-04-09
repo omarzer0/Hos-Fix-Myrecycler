@@ -15,16 +15,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    RecyclerView recyclerView;
+    ArrayList<Items> arrayList = new ArrayList<>();
+    final int ADD_REQUEST_CODE = 0;
+    ItemAdapter adapter = new ItemAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        adapter.itemsArrayList = arrayList;
 
-        RecyclerView recyclerView;
-        ArrayList<Items> arrayList = new ArrayList<Items>();
-        final int ADD_REQUEST_CODE = 0;
+
         recyclerView = findViewById(R.id.rview);
+        recyclerView.setAdapter(adapter);
+
         FloatingActionButton create = findViewById(R.id.create_button);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,11 +39,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ItemAdapter adapter = new ItemAdapter();
-        recyclerView.setAdapter(adapter);
 
 
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            arrayList.add((Items) data.getSerializableExtra("info"));
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

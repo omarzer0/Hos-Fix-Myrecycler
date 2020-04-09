@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class Items implements Serializable {
 
-    String Name ;
-    String Number ;
+    private String Name ;
+    private String Number ;
 
     public Items(String name, String number) {
-        Name = name;
-        Number = number;
+        this.Name = name;
+        this.Number = number;
     }
 
     public String getName() {
@@ -17,7 +17,7 @@ public class Items implements Serializable {
     }
 
     public void setName(String name) {
-        Name = name;
+        this.Name = name;
     }
 
     public String getNumber() {
@@ -25,6 +25,6 @@ public class Items implements Serializable {
     }
 
     public void setNumber(String number) {
-        Number = number;
+        this.Number = number;
     }
 }

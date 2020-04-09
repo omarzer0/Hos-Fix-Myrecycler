@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,12 +31,18 @@ public class add_item extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Items info = createContact(name_et.getText().toString(),number_et.getText().toString());
-                if (info != null) {
-                    Intent intent = new Intent();
-                    intent.putExtra("info", info);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
+                try {
+                    Items info = createContact(name_et.getText().toString(),number_et.getText().toString());
+                    if (info != null) {
+                        Intent intent = new Intent();
+                        intent.putExtra("info", info);
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                }
+
+
+                }catch (Exception e){
+                    Toast.makeText(add_item.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
