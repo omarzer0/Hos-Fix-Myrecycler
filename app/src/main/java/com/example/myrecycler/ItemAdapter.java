@@ -11,7 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.itemsViewHolder> {
+    private  Clickmanager clickmanager;
     public ArrayList<Items> itemsArrayList = new ArrayList<>();
+
+    public ItemAdapter(Clickmanager clickmanager) {
+        this.clickmanager = clickmanager;
+    }
 
     @NonNull
     @Override
@@ -20,11 +25,28 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.itemsViewHolde
         return new itemsViewHolder(view);
     }
 
+    interface Clickmanager{
+       void cl(Items items, int position);
+       void del( int position);
+    }
+
 
 
     @Override
-    public void onBindViewHolder(@NonNull itemsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull itemsViewHolder holder, final int position) {
         holder.onBind(itemsArrayList.get(position));
+        holder.itemView.findViewById(R.id.del_img).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               clickmanager.del(position);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickmanager.cl(itemsArrayList.get(position), position);
+            }
+        });
     }
 
     @Override

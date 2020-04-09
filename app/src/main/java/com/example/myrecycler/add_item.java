@@ -21,9 +21,16 @@ public class add_item extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
+        setContentView(R.layout.add_item);
         name_et = findViewById(R.id.et_name);
         number_et = findViewById(R.id.et_number);
+
+        if(getIntent().hasExtra("items")){
+            Items items = (Items) getIntent().getSerializableExtra("items");
+            number_et.setText(items.getName());
+            number_et.setText(items.getNumber());
+
+        }
 
 
 
@@ -31,19 +38,18 @@ public class add_item extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+
                     Items info = createContact(name_et.getText().toString(),number_et.getText().toString());
                     if (info != null) {
                         Intent intent = new Intent();
                         intent.putExtra("info", info);
+                        intent.putExtra("pos",getIntent().getIntExtra("pos",0));
                         setResult(Activity.RESULT_OK, intent);
                         finish();
                 }
 
 
-                }catch (Exception e){
-                    Toast.makeText(add_item.this, "Error", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }

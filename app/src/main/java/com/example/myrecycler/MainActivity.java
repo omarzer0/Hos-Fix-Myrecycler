@@ -18,7 +18,28 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Items> arrayList = new ArrayList<>();
     final int ADD_REQUEST_CODE = 0;
-    ItemAdapter adapter = new ItemAdapter();
+    final int EDIT_REQUEST_CODE = 1;
+
+
+    final ItemAdapter.Clickmanager AD = new ItemAdapter.Clickmanager() {
+
+        @Override
+        public void cl(Items items, int position) {
+            Intent intent = new Intent(MainActivity.this, add_item.class);
+            intent.putExtra("items", items);
+            intent.putExtra("pos", position);
+            startActivityForResult(intent, EDIT_REQUEST_CODE);
+        }
+
+        @Override
+        public void del(int position) {
+
+            arrayList.remove(position);
+            adapter.notifyDataSetChanged();
+
+        }
+    };
+    ItemAdapter adapter = new ItemAdapter(AD);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == ADD_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             arrayList.add((Items) data.getSerializableExtra("info"));
             adapter.notifyDataSetChanged();
+        } else if (requestCode == EDIT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            arrayList.set(data.getIntExtra("pos", 0), (Items) data.getSerializableExtra("items"));
+            adapter.notifyDataSetChanged();
         }
-    }
 
-}
+    }}
