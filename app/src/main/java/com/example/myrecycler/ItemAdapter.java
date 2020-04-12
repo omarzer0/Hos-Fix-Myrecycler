@@ -6,17 +6,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.itemsViewHolder> {
+public class ItemAdapter extends ListAdapter<Items,ItemAdapter.itemsViewHolder> {
     private  Clickmanager clickmanager;
-    public ArrayList<Items> itemsArrayList = new ArrayList<>();
 
-    public ItemAdapter(Clickmanager clickmanager) {
+
+    protected ItemAdapter( DiffUtil.ItemCallback<Items> diffCallback,Clickmanager clickmanager) {
+        super(diffCallback);
+
         this.clickmanager = clickmanager;
+
     }
+
 
     @NonNull
     @Override
@@ -26,33 +32,29 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.itemsViewHolde
     }
 
     interface Clickmanager{
-       void cl(Items items, int position);
-       void del( int position);
+        void cl(Items items, int position);
+        void del( Items items);
     }
 
 
 
     @Override
     public void onBindViewHolder(@NonNull itemsViewHolder holder, final int position) {
-        holder.onBind(itemsArrayList.get(position));
+        holder.onBind(getItem(position));
         holder.itemView.findViewById(R.id.del_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               clickmanager.del(position);
+                clickmanager.del(getItem(position));
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickmanager.cl(itemsArrayList.get(position), position);
+                clickmanager.cl(getItem(position), position);
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return itemsArrayList.size();
-    }
 
     class itemsViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvNumber;
@@ -70,5 +72,3 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.itemsViewHolde
     }
 
 }
-
-

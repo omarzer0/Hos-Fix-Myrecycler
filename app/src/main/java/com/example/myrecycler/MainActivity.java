@@ -1,7 +1,9 @@
 package com.example.myrecycler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -32,20 +34,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void del(int position) {
+        public void del(Items items) {
 
-            arrayList.remove(position);
-            adapter.notifyDataSetChanged();
-
+            arrayList.remove(items);
+            ArrayList<Items> IT = new ArrayList<>(arrayList);
+            adapter.submitList(IT);
         }
     };
-    ItemAdapter adapter = new ItemAdapter(AD);
+    ItemAdapter adapter = new ItemAdapter(new DiffUtil.ItemCallback<Items>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Items oldItem, @NonNull Items newItem) {
+            return oldItem.getNumber().equals(newItem.getNumber())&& oldItem.getName().equals(newItem.getName());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Items oldItem, @NonNull Items newItem) {
+            return false;
+        }
+    },AD);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adapter.itemsArrayList = arrayList;
+        adapter.submitList(arrayList);
 
 
         recyclerView = findViewById(R.id.rview);
@@ -69,10 +81,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             arrayList.add((Items) data.getSerializableExtra("info"));
-            adapter.notifyDataSetChanged();
+            ArrayList<Items> IT = new ArrayList<>(arrayList);
+            adapter.submitList(IT);
         } else if (requestCode == EDIT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            arrayList.set(data.getIntExtra("pos", 0), (Items) data.getSerializableExtra("items"));
-            adapter.notifyDataSetChanged();
+            if (data != null) {
+                arrayList.set(data.getIntExtra("pos", 0), (Items) data.getSerializableExtra("info"));
+            }
+            ArrayList<Items> IT = new ArrayList<>(arrayList);
+            adapter.submitList(IT);
         }
 
     }}

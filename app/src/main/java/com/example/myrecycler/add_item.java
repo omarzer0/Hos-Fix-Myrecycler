@@ -27,7 +27,7 @@ public class add_item extends AppCompatActivity {
 
         if(getIntent().hasExtra("items")){
             Items items = (Items) getIntent().getSerializableExtra("items");
-            number_et.setText(items.getName());
+            name_et.setText(items.getName());
             number_et.setText(items.getNumber());
 
         }
