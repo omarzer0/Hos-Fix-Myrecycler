@@ -1,6 +1,8 @@
 package com.example.myrecycler;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Database;
+import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -31,6 +33,8 @@ public class add_item extends AppCompatActivity {
             number_et.setText(items.getNumber());
 
         }
+//        Database db = Room.databaseBuilder(getApplicationContext(),
+//                Database.class, "database-name").build();
 
 
 

@@ -1,10 +1,15 @@
 package com.example.myrecycler;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
-
-public class Items implements Serializable {
-
+@Entity(tableName = "Items")
+public class Items  {
+@ColumnInfo(name = "Name")
     private String Name ;
+@PrimaryKey(autoGenerate = false)
     private String Number ;
 
     public Items(String name, String number) {
