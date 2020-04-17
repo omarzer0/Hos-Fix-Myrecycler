@@ -1,20 +1,38 @@
 package com.example.myrecycler;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-@Entity(tableName = "Items")
-public class Items  {
-@ColumnInfo(name = "Name")
+
+@Entity(tableName = "items")
+public class Items implements Serializable {
+    @ColumnInfo(name = "Name")
     private String Name ;
-@PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "Number")
     private String Number ;
 
+    public Items() {
+    }
+
+
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    @PrimaryKey(autoGenerate = true)
+    private int Id ;
+
     public Items(String name, String number) {
-        this.Name = name;
-        this.Number = number;
+        Name = name;
+        Number = number;
     }
 
     public String getName() {
@@ -22,7 +40,7 @@ public class Items  {
     }
 
     public void setName(String name) {
-        this.Name = name;
+        Name = name;
     }
 
     public String getNumber() {
@@ -30,6 +48,6 @@ public class Items  {
     }
 
     public void setNumber(String number) {
-        this.Number = number;
+        Number = number;
     }
 }

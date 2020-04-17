@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,12 +16,15 @@ import android.widget.Button;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    ArrayList<Items> arrayList = new ArrayList<>();
+//    List<Items> arrayList = new ArrayList<>();
     final int ADD_REQUEST_CODE = 0;
     final int EDIT_REQUEST_CODE = 1;
+    ArrayList<Items> arrayList = new ArrayList();
+
 
 
     final ItemAdapter.Clickmanager AD = new ItemAdapter.Clickmanager() {
@@ -60,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
         adapter.submitList(arrayList);
 
 
+          //here the object of data base will call and build
+      AppDataBase db = Room.databaseBuilder(getApplicationContext(), AppDataBase.class, "app.db")
+                .allowMainThreadQueries()
+                .build();
+      // list item insted of arraylist
+        List<Items> dbContacts = db.itemsDao().getItems();
+
+
         recyclerView = findViewById(R.id.rview);
         recyclerView.setAdapter(adapter);
 
@@ -80,11 +92,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            arrayList.add((Items) data.getSerializableExtra("info"));
-            ArrayList<Items> IT = new ArrayList<>(arrayList);
-            adapter.submitList(IT);
+
+            // here the couple of lines to add item to list or db
+//            List<Items> dbContacts = db.itemsDao().getItems();
+//            adapter.submitList(dbContacts);
         } else if (requestCode == EDIT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
+                // here the couple of lines to edit item to list or db
+
                 arrayList.set(data.getIntExtra("pos", 0), (Items) data.getSerializableExtra("info"));
             }
             ArrayList<Items> IT = new ArrayList<>(arrayList);

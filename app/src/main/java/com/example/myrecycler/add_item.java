@@ -33,8 +33,11 @@ public class add_item extends AppCompatActivity {
             number_et.setText(items.getNumber());
 
         }
-//        Database db = Room.databaseBuilder(getApplicationContext(),
-//                Database.class, "database-name").build();
+        // i add these lines here it unable to take an Extras IDK its about the normal situation or its new bug so i just wanna test it
+
+
+//        AppDataBase db = Room.databaseBuilder(getApplicationContext(),
+//                AppDataBase.class, "database-name").build();
 
 
 
@@ -57,6 +60,8 @@ public class add_item extends AppCompatActivity {
             }
         });
     }
+
+    // the block response on empty name or number
 
     private Items createContact(String name, String number) {
         boolean invalid = false;
