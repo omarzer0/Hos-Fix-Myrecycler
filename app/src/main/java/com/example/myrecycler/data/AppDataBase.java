@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.myrecycler.Items;
 
-@Database(entities ={Items.class} ,version =2)
+@Database(entities ={Items.class} ,version =1)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static volatile AppDataBase INSTANCE;

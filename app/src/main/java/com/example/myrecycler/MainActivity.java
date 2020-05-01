@@ -17,7 +17,6 @@ import com.example.myrecycler.repository.ConnectRepo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -27,26 +26,17 @@ public class MainActivity extends AppCompatActivity {
     AppDataBase db;
 
 
-
-
-
-
     final ItemAdapter.Clickmanager AD = new ItemAdapter.Clickmanager() {
 
         // no more need for position you can delete it here
         //you must also delete it in add_item
         @Override
-        public void cl(Items items, int position) {
+        public void cl(Items items) {
             Intent intent = new Intent(MainActivity.this, add_item.class);
             intent.putExtra("items", items);
             intent.putExtra("pos", itemsList.indexOf(items));
             startActivityForResult(intent, EDIT_REQUEST_CODE);
         }
-
-
-
-
-
 
         @Override
         public void del(Items items) {
@@ -73,11 +63,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
-
     ItemAdapter adapter = new ItemAdapter(new DiffUtil.ItemCallback<Items>() {
         @Override
         public boolean areItemsTheSame(@NonNull Items oldItem, @NonNull Items newItem) {
@@ -91,34 +76,25 @@ public class MainActivity extends AppCompatActivity {
     }, AD);
 
 
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        ConnectRepo repo = new ConnectRepo(db, callback);
-        ConnectRepo repo = new ConnectRepo(db,callback);
 
-
+        ///// add db
+        db = AppDataBase.getInstance(this);
+        ConnectRepo repo = new ConnectRepo(db, callback);
         repo.execute();
 
 
-        db = AppDataBase.getInstance(this);
-        itemsList = db.itemsDao().getItems();
-        adapter.submitList(itemsList);
-
-
-
+        ///// error
+//        itemsList = db.itemsDao().getItems();
+//        adapter.submitList(itemsList);
+//        db = AppDataBase.getInstance(this);
 
         recyclerView = findViewById(R.id.rview);
         recyclerView.setAdapter(adapter);
-
-
-
 
 
         FloatingActionButton create = findViewById(R.id.create_button);
@@ -134,11 +110,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -148,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 //            itemsList = db.itemsDao().getItems();
 //            adapter.submitList(itemsList);
             Add_data addContact = new Add_data(db, callback);
-            addContact.execute(new Items(data.getStringExtra("name"),data.getStringExtra("number")));
+            addContact.execute(new Items(data.getStringExtra("name"), data.getStringExtra("number")));
 
         } else if (requestCode == EDIT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             db.itemsDao().update((Items) data.getSerializableExtra("info"));

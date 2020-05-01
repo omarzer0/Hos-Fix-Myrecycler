@@ -32,7 +32,7 @@ public class ItemAdapter extends ListAdapter<Items,ItemAdapter.itemsViewHolder> 
     }
 
     interface Clickmanager{
-        void cl(Items items, int position);
+        void cl(Items items);
         void del( Items items);
     }
 
@@ -50,7 +50,7 @@ public class ItemAdapter extends ListAdapter<Items,ItemAdapter.itemsViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickmanager.cl(getItem(position), position);
+                clickmanager.cl(getItem(position));
             }
         });
     }
